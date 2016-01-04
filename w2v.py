@@ -10,8 +10,8 @@ from regex_converter import *
 
 
 wvmod = Blueprint('wv', __name__)
-model_file = 'data/w2v/w2vsample.bin'
-#model_file = 'data/w2v/charles.sgram.5min.bin'
+#model_file = 'data/w2v/w2vsample.bin'
+model_file = 'data/w2v/charles.sgram.5min.bin'
 model = Word2Vec.load_word2vec_format(model_file,binary=True,encoding='latin-1')
 s = time()
 model.init_sims(replace=True)
@@ -19,30 +19,37 @@ e = time()
 print e - s, "Seconds to load the model"
 
 def get_similars(word):
-    s = model.most_similar(word)
-    if len(s) > 0:
-        t = []
-        for w in s:
-            t.append(w[0])
-        print t
-        return t
+    try:
+        s = model.most_similar(word)
+        if len(s) > 0:
+            t = []
+            for w in s:
+                t.append(w[0])
+            print t
+            return t
+    except Exception as e:
+        pass
+
     return 'None'
 
 
 @wvmod.route("/h/<regex('.*?'):word>/html/")
 def hin_similar_html(word):
     #print word
-    word = convert(word.encode('utf-8'))
-    words = get_similars(word)
-    if type(words) is list:
-        s = "<table border='1'>"
-        s += "<tr><td>Similar Words of " + convert(word, False) + "</td></tr>"
-        s += "<tr><td><div class='wrappable'>"
-        t = convert(";".join(words), False).split(';')
-        s += "&emsp;".join(t)
-        s += "</div></td></tr>"
-        s += '</table>'
-        return s
+    try:
+        word = convert(word.encode('utf-8'))
+        words = get_similars(word)
+        if type(words) is list:
+            s = "<table border='1'>"
+            s += "<tr><td>Similar Words of " + convert(word, False) + "</td></tr>"
+            s += "<tr><td><div class='wrappable'>"
+            t = convert(";".join(words), False).split(';')
+            s += "&emsp;".join(t)
+            s += "</div></td></tr>"
+            s += '</table>'
+            return s
+    except Exception as e:
+        pass
 
     return 'None'
 

@@ -3,10 +3,11 @@ from regex_converter import *
 import os, json
 import random
 import re
-
+from flask.ext.cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 #AutoIndex(app, browse_root=os.path.curdir)
 #ext = Sitemap(app=app)
 # Add this to enable regex parsing of the url.
