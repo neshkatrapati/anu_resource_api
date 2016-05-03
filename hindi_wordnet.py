@@ -4,7 +4,6 @@
 import os
 import sys
 import json
-import json
 from flask import Blueprint, jsonify
 from regex_converter import *
 

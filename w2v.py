@@ -10,8 +10,8 @@ from regex_converter import *
 
 
 wvmod = Blueprint('wv', __name__)
-#model_file = 'data/w2v/w2vsample.bin'
-model_file = 'data/w2v/charles.sgram.5min.bin'
+model_file = 'data/w2v/w2vsample.bin'
+#model_file = 'data/w2v/charles.sgram.5min.bin'
 model = Word2Vec.load_word2vec_format(model_file,binary=True,encoding='latin-1')
 s = time()
 model.init_sims(replace=True)
